@@ -15,11 +15,12 @@ def main(argv):
     parser.add_argument("-o", dest="outputfile", default="out.txt", help="path of the output log file, default out.txt")
     parser.add_argument("-t", dest="tout", default=10, help="timeout for the response in second, default 10")
     parser.add_argument("-cookie", dest="cookie", default=None, help="add cookie session to header")
+    parser.add_argument("-v", action='store_true', dest="verbose", default=False, help="verbose mode, shows the output of the request")
     args = parser.parse_args()
 
-    readFileLines(args.url, args.outputfile, args.tout, args.cookie, args.method, args.dataFile)
+    readFileLines(args.url, args.outputfile, args.tout, args.cookie, args.method, args.dataFilei, args.verbose)
 
-def readFileLines(url, outputfile, tout, cookie, method, dataFile):
+def readFileLines(url, outputfile, tout, cookie, method, dataFilei, verbose):
     urlModel = urlFormat(url)
     url = urlModel['url']
     params = urlModel['params'] 
@@ -42,7 +43,8 @@ def readFileLines(url, outputfile, tout, cookie, method, dataFile):
     content = resp.read()
     status = resp.status
     outstring =  str(url).rstrip("\n") + str(params).rstrip("\n")  + ' | status: ' + str(status) + "\n" + content
-    print outstring
+    if (verbose):
+        print outstring
     fout = open(outputfile, 'w') 
     fout.write(outstring)
 
